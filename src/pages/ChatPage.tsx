@@ -50,6 +50,10 @@ export function ChatPage() {
         role: 'assistant',
         content: response.message,
         isError: response.response_type === 'error',
+        availability:
+          response.response_type === 'availability'
+            ? { nights: response.nights, rooms: response.rooms }
+            : undefined,
       },
     ])
     setIsSending(false)
