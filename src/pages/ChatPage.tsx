@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import mistyHills from '@/assets/misty-hills.jpg'
 import { ChatHeader } from '@/components/ChatHeader'
 import { ChatInput } from '@/components/ChatInput'
 import { ConnectingState } from '@/components/ConnectingState'
@@ -95,8 +96,13 @@ export function ChatPage() {
   const status = isConnecting ? 'connecting' : conversationFailed ? 'offline' : 'online'
 
   return (
-    <div className="flex h-dvh justify-center bg-cream-100 sm:p-6">
-      <main className="flex h-full w-full max-w-2xl flex-col overflow-hidden bg-cream-50 sm:rounded-3xl sm:border sm:border-brand-100 sm:shadow-lg sm:shadow-brand-200/40">
+    <div
+      className="flex h-dvh justify-center bg-cream-100 bg-cover bg-center sm:p-6"
+      style={{
+        backgroundImage: `linear-gradient(rgba(250, 247, 242, 0.55), rgba(250, 247, 242, 0.55)), url(${mistyHills})`,
+      }}
+    >
+      <main className="relative flex h-full w-full max-w-2xl flex-col overflow-hidden bg-cream-50 sm:rounded-3xl sm:border sm:border-sage-200 sm:shadow-lg sm:shadow-sage-300/40">
         <ChatHeader status={status} />
         {isConnecting ? (
           <ConnectingState />

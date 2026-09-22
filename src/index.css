@@ -1,27 +1,47 @@
 @import 'tailwindcss';
 
+/*
+  Theme: "Misty Hill" - premium, cozy, natural.
+  Palette: Forest Green #1F3A32 · Sage #A7B9A8 · Cream #FAF7F2 · Gold #D7B97F
+*/
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
-  /* Warm cream surfaces */
-  --color-cream-50: #fffaf5;
-  --color-cream-100: #fff4e8;
-  --color-cream-200: #fde8d3;
+  /* Cream surfaces */
+  --color-cream-50: #fdfbf8;
+  --color-cream-100: #faf7f2;
+  --color-cream-200: #efe8db;
 
-  /* Orange accent */
-  --color-brand-50: #fff7ed;
-  --color-brand-100: #ffedd5;
-  --color-brand-200: #fed7aa;
-  --color-brand-300: #fdba74;
-  --color-brand-400: #fb923c;
-  --color-brand-500: #f97316;
-  --color-brand-600: #ea580c;
-  --color-brand-700: #c2410c;
+  /* Forest green - primary (buttons, user bubble, links, focus) */
+  --color-brand-50: #eef2f0;
+  --color-brand-100: #dbe4e0;
+  --color-brand-200: #b3c5bd;
+  --color-brand-300: #7fa093;
+  --color-brand-400: #43695c;
+  --color-brand-500: #1f3a32;
+  --color-brand-600: #182f28;
+  --color-brand-700: #12241e;
 
-  /* Warm neutrals for text */
-  --color-ink-900: #2b1d12;
-  --color-ink-700: #5a4636;
-  --color-ink-500: #8a7563;
+  /* Sage - secondary, natural accents */
+  --color-sage-100: #eef1ee;
+  --color-sage-200: #dde4dd;
+  --color-sage-300: #c3d0c3;
+  --color-sage-500: #a7b9a8;
+  --color-sage-700: #63755f;
+
+  /* Gold - premium accent (recommended badge, highlights) */
+  --color-gold-50: #faf3e6;
+  --color-gold-100: #f3e4c4;
+  --color-gold-200: #ecdab0;
+  --color-gold-300: #e5cd9c;
+  --color-gold-400: #d7b97f;
+  --color-gold-500: #c2a169;
+  --color-gold-700: #8a7042;
+
+  /* Text, on Forest Green */
+  --color-ink-900: #1c2e28;
+  --color-ink-700: #445851;
+  --color-ink-500: #6f8079;
 }
 
 @layer base {

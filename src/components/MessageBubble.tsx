@@ -12,7 +12,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             ? 'rounded-br-md bg-brand-500 text-white'
             : message.isError
               ? 'rounded-bl-md border border-red-200 bg-red-50 text-red-700'
-              : 'rounded-bl-md border border-brand-100 bg-white text-ink-900'
+              : 'rounded-bl-md border border-gold-200 bg-gold-50 text-ink-900'
         }`}
       >
         {message.content}

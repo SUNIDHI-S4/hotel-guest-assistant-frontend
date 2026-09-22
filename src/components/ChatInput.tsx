@@ -48,10 +48,10 @@ export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-t border-brand-100 bg-white px-4 py-3 sm:px-6"
+      className="border-t border-sage-200 bg-white px-4 py-3 sm:px-6"
       style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
     >
-      <div className="flex items-end gap-2 rounded-3xl border border-brand-200 bg-cream-50 py-1.5 pl-4 pr-1.5 transition focus-within:border-brand-400 focus-within:ring-2 focus-within:ring-brand-200">
+      <div className="flex items-end gap-2 rounded-3xl border border-sage-300 bg-cream-50 py-1.5 pl-4 pr-1.5 transition focus-within:border-brand-400 focus-within:ring-2 focus-within:ring-brand-200">
         <textarea
           ref={textareaRef}
           value={value}

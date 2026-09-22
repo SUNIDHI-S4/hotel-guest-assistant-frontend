@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import mistyHills from '@/assets/misty-hills.jpg'
 import { ASSISTANT_NAME } from '@/config/site'
 import type { ChatMessage } from '@/types/chat'
 import { MessageBubble } from './MessageBubble'
@@ -19,7 +20,12 @@ export function MessageList({ messages, isSending, onSelectSuggestion }: Message
   }, [messages, isSending])
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-6">
+    <div
+      className="flex-1 overflow-y-auto bg-cover bg-center px-4 py-5 sm:px-6"
+      style={{
+        backgroundImage: `linear-gradient(rgba(250, 247, 242, 0.8), rgba(250, 247, 242, 0.8)), url(${mistyHills})`,
+      }}
+    >
       <div className="flex flex-col gap-3">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center gap-6 px-4 py-8 text-center">

@@ -12,7 +12,7 @@ export function ChatHeader({ status = 'online' }: { status?: ConnectionStatus })
   const { dot, label } = STATUS_STYLES[status]
 
   return (
-    <header className="flex items-center gap-3 border-b border-brand-100 bg-white px-4 py-3 sm:px-6">
+    <header className="flex items-center gap-3 border-b border-sage-200 bg-white px-4 py-3 sm:px-6">
       <div
         className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white"
         aria-hidden="true"
