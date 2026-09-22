@@ -1,4 +1,4 @@
-import { ASSISTANT_NAME, HOTEL_NAME } from '@/config/site'
+import { ASSISTANT_NAME, HOTEL_LOCATION, HOTEL_NAME } from '@/config/site'
 
 export type ConnectionStatus = 'connecting' | 'online' | 'offline'
 
@@ -24,6 +24,7 @@ export function ChatHeader({ status = 'online' }: { status?: ConnectionStatus })
       </div>
       <div className="min-w-0">
         <h1 className="truncate text-base font-semibold leading-tight text-ink-900">{HOTEL_NAME}</h1>
+        <p className="truncate text-xs text-ink-500">{HOTEL_LOCATION}</p>
         <p className="flex items-center gap-1.5 text-xs text-ink-500">
           {ASSISTANT_NAME} · Guest Assistant
           <span className={`h-1.5 w-1.5 rounded-full ${dot}`} aria-hidden="true" />
