@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ChatHeader } from '@/components/ChatHeader'
 import { ChatInput } from '@/components/ChatInput'
 import { MessageList } from '@/components/MessageList'
@@ -12,7 +12,7 @@ export function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isSending, setIsSending] = useState(false)
 
-  useEffect(() => {
+  const startConversation = useCallback(() => {
     let cancelled = false
 
     createConversation()
@@ -28,6 +28,13 @@ export function ChatPage() {
     }
   }, [])
 
+  useEffect(() => startConversation(), [startConversation])
+
+  const handleRetry = () => {
+    setConversationFailed(false)
+    startConversation()
+  }
+
   const handleSend = async (text: string) => {
     if (!conversationId || isSending) return
 
@@ -36,7 +43,15 @@ export function ChatPage() {
 
     const response = await sendChatMessage(conversationId, text)
 
-    setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: 'assistant', content: response.message }])
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: response.message,
+        isError: response.response_type === 'error',
+      },
+    ])
     setIsSending(false)
   }
 
@@ -44,11 +59,18 @@ export function ChatPage() {
     <div className="flex h-dvh justify-center bg-cream-100 sm:p-6">
       <main className="flex h-full w-full max-w-2xl flex-col overflow-hidden bg-cream-50 sm:rounded-3xl sm:border sm:border-brand-100 sm:shadow-lg sm:shadow-brand-200/40">
         <ChatHeader />
-        <MessageList messages={messages} onSelectSuggestion={handleSend} />
+        <MessageList messages={messages} isSending={isSending} onSelectSuggestion={handleSend} />
         {conversationFailed && (
-          <p className="px-4 pb-1 text-center text-xs text-red-600 sm:px-6">
-            Couldn&apos;t connect to the assistant. Please refresh the page.
-          </p>
+          <div className="flex items-center justify-center gap-2 border-t border-red-100 bg-red-50 px-4 py-2 text-center text-xs text-red-700 sm:px-6">
+            <span>Couldn&apos;t connect to the assistant.</span>
+            <button
+              type="button"
+              onClick={handleRetry}
+              className="font-semibold underline underline-offset-2 hover:text-red-800"
+            >
+              Retry
+            </button>
+          </div>
         )}
         <ChatInput onSend={handleSend} disabled={!conversationId || isSending} />
       </main>
