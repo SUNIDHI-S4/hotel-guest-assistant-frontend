@@ -1,3 +1,5 @@
+import { ASSISTANT_NAME, HOTEL_NAME } from '@/config/site'
+
 export function ChatHeader() {
   return (
     <header className="flex items-center gap-3 border-b border-brand-100 bg-white px-4 py-3 sm:px-6">
@@ -11,8 +13,8 @@ export function ChatHeader() {
         </svg>
       </div>
       <div className="min-w-0">
-        <h1 className="truncate text-base font-semibold leading-tight text-ink-900">Royal Orchid Bengaluru</h1>
-        <p className="text-xs text-ink-500">Guest Assistant</p>
+        <h1 className="truncate text-base font-semibold leading-tight text-ink-900">{HOTEL_NAME}</h1>
+        <p className="text-xs text-ink-500">{ASSISTANT_NAME} · Guest Assistant</p>
       </div>
     </header>
   )
