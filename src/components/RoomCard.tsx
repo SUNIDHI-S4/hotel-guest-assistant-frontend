@@ -10,7 +10,7 @@ interface RoomCardProps {
 export function RoomCard({ room, nights, recommended = false }: RoomCardProps) {
   return (
     <div
-      className={`w-64 shrink-0 rounded-2xl border bg-white p-4 shadow-sm ${
+      className={`w-64 shrink-0 snap-start rounded-2xl border bg-white p-4 shadow-sm ${
         recommended ? 'border-brand-300 ring-1 ring-brand-200' : 'border-brand-100'
       }`}
     >

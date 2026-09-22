@@ -50,6 +50,19 @@ export interface CreateConversationData {
   conversation_id: string
 }
 
+// GET /conversations/{id}/messages
+export interface StoredMessage {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  created_at: string
+}
+
+export interface MessagesData {
+  conversation_id: string
+  messages: StoredMessage[]
+}
+
 // Shared success/error envelope used by /conversations endpoints
 export interface ApiSuccess<T> {
   success: true

@@ -1,13 +1,21 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ChatHeader } from '@/components/ChatHeader'
 import { ChatInput } from '@/components/ChatInput'
+import { ConnectingState } from '@/components/ConnectingState'
+import { ConnectionErrorState } from '@/components/ConnectionErrorState'
 import { MessageList } from '@/components/MessageList'
 import { sendChatMessage } from '@/services/chatService'
-import { createConversation } from '@/services/conversationService'
+import { createConversation, getMessages } from '@/services/conversationService'
 import type { ChatMessage } from '@/types/chat'
+import {
+  clearStoredConversationId,
+  getStoredConversationId,
+  setStoredConversationId,
+} from '@/utils/conversationStorage'
 
 export function ChatPage() {
   const [conversationId, setConversationId] = useState<string | null>(null)
+  const [isConnecting, setIsConnecting] = useState(true)
   const [conversationFailed, setConversationFailed] = useState(false)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -15,13 +23,37 @@ export function ChatPage() {
   const startConversation = useCallback(() => {
     let cancelled = false
 
-    createConversation()
-      .then((id) => {
-        if (!cancelled) setConversationId(id)
-      })
-      .catch(() => {
+    const init = async () => {
+      const storedId = getStoredConversationId()
+
+      // Resume a saved conversation and restore its history, if there is one.
+      if (storedId) {
+        try {
+          const history = await getMessages(storedId)
+          if (cancelled) return
+          setConversationId(storedId)
+          setMessages(history.map((m) => ({ id: m.id, role: m.role, content: m.content })))
+          setIsConnecting(false)
+          return
+        } catch {
+          // The saved id is gone or invalid (e.g. an old visit) - start fresh below.
+          clearStoredConversationId()
+        }
+      }
+
+      try {
+        const id = await createConversation()
+        if (cancelled) return
+        setStoredConversationId(id)
+        setConversationId(id)
+      } catch {
         if (!cancelled) setConversationFailed(true)
-      })
+      } finally {
+        if (!cancelled) setIsConnecting(false)
+      }
+    }
+
+    init()
 
     return () => {
       cancelled = true
@@ -32,6 +64,7 @@ export function ChatPage() {
 
   const handleRetry = () => {
     setConversationFailed(false)
+    setIsConnecting(true)
     startConversation()
   }
 
@@ -59,24 +92,22 @@ export function ChatPage() {
     setIsSending(false)
   }
 
+  const status = isConnecting ? 'connecting' : conversationFailed ? 'offline' : 'online'
+
   return (
     <div className="flex h-dvh justify-center bg-cream-100 sm:p-6">
       <main className="flex h-full w-full max-w-2xl flex-col overflow-hidden bg-cream-50 sm:rounded-3xl sm:border sm:border-brand-100 sm:shadow-lg sm:shadow-brand-200/40">
-        <ChatHeader />
-        <MessageList messages={messages} isSending={isSending} onSelectSuggestion={handleSend} />
-        {conversationFailed && (
-          <div className="flex items-center justify-center gap-2 border-t border-red-100 bg-red-50 px-4 py-2 text-center text-xs text-red-700 sm:px-6">
-            <span>Couldn&apos;t connect to the assistant.</span>
-            <button
-              type="button"
-              onClick={handleRetry}
-              className="font-semibold underline underline-offset-2 hover:text-red-800"
-            >
-              Retry
-            </button>
-          </div>
+        <ChatHeader status={status} />
+        {isConnecting ? (
+          <ConnectingState />
+        ) : conversationFailed ? (
+          <ConnectionErrorState onRetry={handleRetry} />
+        ) : (
+          <MessageList messages={messages} isSending={isSending} onSelectSuggestion={handleSend} />
         )}
-        <ChatInput onSend={handleSend} disabled={!conversationId || isSending} />
+        {!isConnecting && !conversationFailed && (
+          <ChatInput onSend={handleSend} disabled={!conversationId || isSending} />
+        )}
       </main>
     </div>
   )
